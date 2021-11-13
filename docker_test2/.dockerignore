@@ -1,0 +1,5 @@
+.idea
+.venv
+requests-examples.http
+README.md
+sqlite3.db
