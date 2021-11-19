@@ -1,0 +1,56 @@
+version: "3.9"
+
+networks:
+  backend:
+    name: backend
+  frontend:
+    name: frontend
+
+volumes:
+  database_data:
+
+services:
+
+  postgres_service:
+    container_name: postgres
+    image: postgres:14.1-alpine3.14
+    restart: always
+    env_file:
+      - docker/postgres/postgres.env
+    ports: 
+      - 5432:5432
+    volumes:
+      - database_data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+
+  nginx_service:
+    container_name: nginx
+    build:
+      context: ./docker/nginx
+      dockerfile: ./Dockerfile
+    ports:
+      - 1234:80
+    depends_on:
+      - backend_service
+    networks:
+      - frontend
+
+      
+  backend_service:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: django
+    env_file:
+      - docker/postgres/postgres.env
+      - django.env
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres_service
+    networks:
+      - backend
+      - frontend
+

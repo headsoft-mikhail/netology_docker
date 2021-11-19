@@ -1,0 +1,9 @@
+.idea
+.venv
+.git
+.cache
+requests-examples.http
+README.md
+sqlite3.db
+docker/
+
