@@ -30,32 +30,31 @@
 Решить задачу до конца не получилось, есть много вопросов, которые в чате не решить. 
 
 ## Что сделано:
-1. Отредактирован файл [settings.py](): БД изменена с sqlite3 на postgresql, также параметры такие как ALLOWED_HOSTS, DEBUG, SECRET_KEY и др. получаются с помощью os.getenv("NAME") для того, чтобы задавать их через .env-файл
-1. Создан файл [docker-compose.yml](), в котором описаны services(django, postgres, nginx), networks, volumes.
-1. Создан [Dockerfile для nginx]() 
-1. Создан [Dockerfile для django]()
-1. Созданы файлы с перечислением переменных среды: [django.env]() и [postgres.env]() 
+1. Отредактирован файл [settings.py](https://github.com/headsoft-mikhail/netology_docker/blob/master/docker_test3/stocks_products/settings.py): БД изменена с sqlite3 на postgresql, также параметры такие как ALLOWED_HOSTS, DEBUG, SECRET_KEY и др. получаются с помощью os.getenv("NAME") для того, чтобы задавать их через .env-файл
+1. Создан файл [docker-compose.yml](https://github.com/headsoft-mikhail/netology_docker/blob/master/docker_test3/docker-compose.yml), в котором описаны services(django, postgres, nginx), networks, volumes.
+1. Создан [Dockerfile для nginx](https://github.com/headsoft-mikhail/netology_docker/blob/master/docker_test3/docker/nginx/Dockerfile) 
+1. Создан [Dockerfile для django](https://github.com/headsoft-mikhail/netology_docker/tree/master/docker_test3/docker/django/Dockerfile)
+1. Созданы файлы с перечислением переменных среды: [django.env](https://github.com/headsoft-mikhail/netology_docker/blob/master/docker_test3/docker/django/django.env) и [postgres.env](https://github.com/headsoft-mikhail/netology_docker/blob/master/docker_test3/docker/postgres/postgres.env) 
 
 ## Возникшие проблемы:
 1. При сборке создается большое количество образов и контейнеров, которые так и остаются висеть в системе. Это нормально? Или это из-за того что у меня собирается с ошибкой?  
-Сейчас для очистки всех контейнеров и образов использую [clear_docker.sh]()
+[скриншот](https://disk.yandex.ru/i/h4wHEESSRjmJeg "")  
+Сейчас для очистки всех контейнеров и образов использую [clear_docker.sh](https://github.com/headsoft-mikhail/netology_docker/blob/master/docker_test3/clear_docker.sh)
 
-![скриншот](https://disk.yandex.ru/i/h4wHEESSRjmJeg "")
 1. Нужно ли обращать внимание на предупреждение  
 `WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv
 ` ?
-
 1. Такое впечатление, что переменные среды из .env-файлов не подгружаются:  
-![скриншот](https://disk.yandex.ru/i/iArpViinZyw5SQ "")  
+[скриншот](https://disk.yandex.ru/i/iArpViinZyw5SQ "")  
+Если указать явно SECRET_KEY и ALLOWED_HOSTS, получаю сообщение что не удалось подключиться к БД, проверьте запущена ли она локально (что-то в этом роде)  
 Если закомментировать строчку с миграциями в Dockerfile, то сборка завершается, но gunicorn сразу после запуска завершает работу:  
-![скриншот](https://disk.yandex.ru/i/FhSerlXqw9NAYg "")
+[скриншот](https://disk.yandex.ru/i/FhSerlXqw9NAYg "")  
 
 1. Nginx также после сборки и запуска сразу завершает работу:  
-![скриншот](https://disk.yandex.ru/i/vmq4zEfzTdMmYQ "")
-Похоже, что в nginx.conf что-то не так
-
+[скриншот](https://disk.yandex.ru/i/vmq4zEfzTdMmYQ "")  
+Похоже, что в [nginx.conf](https://github.com/headsoft-mikhail/netology_docker/blob/master/docker_test3/docker/nginx/nginx.conf) что-то не так  
 1. Posgres запускается, правда не на том порту:  
-![скриншот](https://disk.yandex.ru/i/Y3mwyMNKPqRs9Q "")  
+[скриншот](https://disk.yandex.ru/i/Y3mwyMNKPqRs9Q "")  
 У меня в postgres.env указан 5433, а postgres подключился 5432.   
 А при попытке запуска на 5432   
 (если указываю в postgres.env   
