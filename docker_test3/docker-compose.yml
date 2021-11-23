@@ -17,11 +17,11 @@ services:
   postgres_service:
     container_name: postgres
     image: postgres:14.1-alpine3.14
-    restart: always
+    restart: unless-stopped
     env_file:
       - docker/postgres/postgres.env
     ports: 
-      - 5433:5433
+      - 5432:5432
     volumes:
       - database_data:/var/lib/postgresql/data
     networks:
@@ -29,11 +29,12 @@ services:
 
   nginx_service:
     container_name: nginx
+    restart: unless-stopped
     build:
       context: ./docker/nginx
       dockerfile: ./Dockerfile
     ports:
-      - 1234:80
+      - 8000:8000
     depends_on:
       - backend_service
     networks:
@@ -47,8 +48,6 @@ services:
     env_file:
       - docker/postgres/postgres.env
       - docker/django/django.env
-    ports:
-      - 8000:8000
     depends_on:
       - postgres_service
     networks:
