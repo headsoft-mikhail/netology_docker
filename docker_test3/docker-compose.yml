@@ -34,17 +34,17 @@ services:
       context: ./docker/nginx
       dockerfile: ./Dockerfile
     ports:
-      - 8000:8000
+      - 8080:8080
     depends_on:
       - backend_service
     networks:
       - frontend
 
   backend_service:
+    container_name: django
     build:
       context: .
       dockerfile: ./docker/django/Dockerfile
-    container_name: django
     env_file:
       - docker/postgres/postgres.env
       - docker/django/django.env
